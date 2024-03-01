@@ -10,15 +10,31 @@ const scene = new THREE.Scene();
 const geo = new THREE.BoxGeometry(1, 1, 1);
 const material = new THREE.MeshBasicMaterial({color: '#23f76b'});
 const mesh = new THREE.Mesh(geo, material);
-// ----------------------
-// Move Mesh position
+/**
+ * MESH POSITION 
+ * OPTION 1: by axis ->  mesh.position.x or y or z
+ * OPTION 2: by using -> mesh.position.set(x, y, z)
+ * 
+ */
 
 // mesh.position.z = 0.7;
 // mesh.position.y = -0.6;
 // mesh.position.x = 1;
 
-// Move mesh position by function position.set(x, y, z);
 mesh.position.set(1, -0.6, 0.7);
+
+/**
+ * CHANGE MESH DIMENSIONS
+ * OPTION 1: use of mesh.scale.x or y or z
+ * OPTION 2: mesh.scale.set(x, y, z)
+ */
+// mesh.scale.x = 2;
+// mesh.scale.y = 0.5;
+// mesh.scale.z = 0.5;
+mesh.scale.set(2, 0.5, 0.5);
+
+
+
 // ----------------------
 scene.add(mesh);
 
