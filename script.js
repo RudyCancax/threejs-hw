@@ -12,53 +12,32 @@ const scene = new THREE.Scene();
 
 /**
  * ===================================
- * OBJECT
+ * GROUP
  * ===================================
  */
-const geo = new THREE.BoxGeometry(1, 1, 1);
-const material = new THREE.MeshBasicMaterial({color: '#23f76b'});
-const mesh = new THREE.Mesh(geo, material);
+const group = new THREE.Group();
+group.position.y = 1;
+scene.add(group);
 
-/**
- * ===================================
- * MESH POSITION 
- * ===================================
- * OPTION 1: by axis ->  mesh.position.x or y or z
- * OPTION 2: by using -> mesh.position.set(x, y, z)
- * 
- * mesh.position.z = 0.7;
- * mesh.position.y = -0.6;
- * mesh.position.x = 1;
- * 
- */
-mesh.position.set(1, -0.6, 0.7);
+const cube1 = new THREE.Mesh(
+    new THREE.BoxGeometry(1, 1, 1),
+    new THREE.MeshBasicMaterial({color: '#23f76b'})
+);
+group.add(cube1);
 
-/**
- * ===================================
- * CHANGE MESH DIMENSIONS
- * ===================================
- * OPTION 1: use of mesh.scale.x or y or z
- * OPTION 2: mesh.scale.set(x, y, z)
- * 
- * mesh.scale.x = 2;
- * mesh.scale.y = 0.5;
- * mesh.scale.z = 0.5;
- */
-mesh.scale.set(2, 0.5, 0.5);
+const cube2 = new THREE.Mesh(
+    new THREE.BoxGeometry(1, 1, 1),
+    new THREE.MeshBasicMaterial({color: '#ffca28'})
+);
+cube2.position.x = -2;
+group.add(cube2);
 
-// INSERT THE MESH (OBJET to the Scene)
-scene.add(mesh);
-
-/**
- * ===================================
- * ROTATION
- * ===================================
- */
-mesh.rotation.reorder('YXZ'); // Make rotation in DEFINED axis ORDER 
-mesh.rotation.y = Math.PI * 0.25;
-mesh.rotation.x = Math.PI * 0.25;
-// mesh.rotateX(Math.PI * 0.25);
-// mesh.rotateY(Math.PI * 0.25);
+const cube3 = new THREE.Mesh(
+    new THREE.BoxGeometry(1, 1, 1),
+    new THREE.MeshBasicMaterial({color: '#13abec', wireframe: true})
+);
+cube3.position.x = 2;
+group.add(cube3);
 
 
 
@@ -69,25 +48,32 @@ const axesHelper = new THREE.AxesHelper(2);
 scene.add(axesHelper);
 
 
-
 // CAMERA
 const camera = new THREE.PerspectiveCamera(35, 800/600);
-// camera.position.z = 10;
-// camera.position.x = 2;
-// camera.position.y = 1;
-camera.position.set(2, 1, 10);
+camera.position.set(1, 1, 7);
+camera.lookAt(cube1.position)
 
-/**
- * ===================================
- * CAMERA: LOOK AT
- * ===================================
- */
-camera.lookAt(mesh.position)
-
-scene.add(camera);
 
 // RENDERER
 const renderer = new THREE.WebGLRenderer({canvas: canvas});
 
 renderer.setSize(800, 600);
-renderer.render(scene, camera);
+
+/**
+ * ANIMATIONS
+*/
+
+const clock = new THREE.Clock();
+const main = () => {
+
+    const time = clock.getElapsedTime();
+
+    cube1.rotation.x = time * Math.PI;
+    cube2.rotation.y = Math.sin(time);
+    cube2.rotation.x = Math.cos(time);
+    cube3.rotation.x = Math.sin(time);
+    renderer.render(scene, camera);
+    window.requestAnimationFrame(main);
+}
+
+main();
