@@ -8,23 +8,36 @@ let coords = {
     x: 0,
     y: 0
 }
+
+let s = {
+    w: window.screen.width,
+    h: window.screen.height
+}
+
 window.addEventListener('mousemove', (event) => {
     coords.x = event.x / sizes.width - 0.5;
     coords.y = event.y / sizes.height - 0.5;
-    console.log(event);
+    console.log(window.screen.height);
+
 });
 
 /**
  * Base
  */
 // Canvas
-const canvas = document.querySelector('canvas.webgl')
+const canvas = document.querySelector('canvas.webgl');
+const button = document.getElementById('resetb');
+
 
 // Sizes
 const sizes = {
-    width: 800,
-    height: 600
+    width: window.screen.width * 0.97,
+    height: window.screen.height * 0.8
 }
+
+button.addEventListener('click', ()=> {
+    controls.reset();
+});
 
 // Scene
 const scene = new THREE.Scene()
@@ -38,8 +51,6 @@ scene.add(mesh)
 
 // Camera
 const camera = new THREE.PerspectiveCamera(65, sizes.width / sizes.height, 0.1, 100)
-// camera.position.x = 2
-// camera.position.y = 2
 camera.position.z = 4;
 scene.add(camera)
 
@@ -55,14 +66,13 @@ const clock = new THREE.Clock()
 
 
 const controls = new OrbitControls( camera, canvas );
-
-//controls.update() must be called after any manual changes to the camera's transform
-controls.update();
+controls.enableDamping = true;
 
 const main = () =>
 {
     const elapsedTime = clock.getElapsedTime()
-    // camera.lookAt(mesh.position)
+
+    controls.update();
 
     // Render
     renderer.render(scene, camera)
