@@ -1,5 +1,4 @@
 import * as THREE from 'three'
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 /**
  * CURSOR
@@ -41,8 +40,8 @@ const camera = new THREE.PerspectiveCamera(65, sizes.width / sizes.height, 0.1, 
 // camera.position.x = 2
 // camera.position.y = 2
 camera.position.z = 4;
+camera.lookAt(mesh.position)
 scene.add(camera)
-
 
 // Renderer
 const renderer = new THREE.WebGLRenderer({
@@ -53,16 +52,18 @@ renderer.setSize(sizes.width, sizes.height)
 // Animate
 const clock = new THREE.Clock()
 
-
-const controls = new OrbitControls( camera, canvas );
-
-//controls.update() must be called after any manual changes to the camera's transform
-controls.update();
-
 const main = () =>
 {
     const elapsedTime = clock.getElapsedTime()
-    // camera.lookAt(mesh.position)
+
+    // Update objects
+    // mesh.rotation.y = elapsedTime;
+
+    // camera
+    camera.position.x = Math.cos(coords.x * Math.PI * 2) * 3;
+    camera.position.z = Math.sin(coords.x * Math.PI * 2) * 3;
+    camera.position.y = coords.y * 3;
+    camera.lookAt(mesh.position)
 
     // Render
     renderer.render(scene, camera)
