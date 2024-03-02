@@ -69,7 +69,8 @@ const renderer = new THREE.WebGLRenderer({
     canvas: canvas
 })
 renderer.setSize(sizes.width, sizes.height);
-renderer.setClearColor(0x0d1332)
+renderer.setClearColor(0x0d1332);
+renderer.setPixelRatio(Math.min(2, window.devicePixelRatio));
 
 // Animate
 const clock = new THREE.Clock()
