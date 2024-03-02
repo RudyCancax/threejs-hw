@@ -1,4 +1,5 @@
-import * as THREE from 'three'
+import * as THREE from 'three';
+import './index.css';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 /**
@@ -31,9 +32,17 @@ const button = document.getElementById('resetb');
 
 // Sizes
 const sizes = {
-    width: window.screen.width * 0.97,
-    height: window.screen.height * 0.8
+    width: window.innerWidth,
+    height: window.innerHeight
 }
+
+window.addEventListener('resize', ()=>{
+    sizes.width = window.innerWidth;
+    sizes.height = window.innerHeight;
+    camera.aspect = sizes.width / sizes.height;
+    camera.updateProjectionMatrix();
+    renderer.setSize(sizes.width, sizes.height);
+});
 
 button.addEventListener('click', ()=> {
     controls.reset();
@@ -44,7 +53,7 @@ const scene = new THREE.Scene()
 
 // Object
 const mesh = new THREE.Mesh(
-    new THREE.BoxGeometry(1, 1, 1, 3, 3, 3),
+    new THREE.BoxGeometry(1, 1, 1),
     new THREE.MeshBasicMaterial({ color: 0xff0000, wireframe: true })
 )
 scene.add(mesh)
@@ -59,7 +68,8 @@ scene.add(camera)
 const renderer = new THREE.WebGLRenderer({
     canvas: canvas
 })
-renderer.setSize(sizes.width, sizes.height)
+renderer.setSize(sizes.width, sizes.height);
+renderer.setClearColor(0x0d1332)
 
 // Animate
 const clock = new THREE.Clock()
